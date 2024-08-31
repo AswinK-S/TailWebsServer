@@ -71,9 +71,32 @@ const addStudent =async(req,res)=>{
     }
 }
 
+//edit student
+const editStudent = async(req,res)=>{
+    try {
+        const {id,name,subjectName,mark} = req.body
+        const student = await Student.findByIdAndUpdate(
+            id,
+            {$set:{name,subjectName,mark}},
+            {new:true,runValidators:true}
+        )
+        console.log('st',student);
+        if(!student){
+           return res.status(404).json({message:"Student not found"})
+        }
+
+        res.status(200).json({ message: "Student updated successfully", student });
+
+    } catch (error) {
+       console.error(error.message)
+       res.status(500).json({message:"Server error"})
+    }
+}
+
 module.exports ={
     login,
     register,
     logout,
-    addStudent
+    addStudent,
+    editStudent
 }
