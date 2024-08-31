@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const Teacher = require('../models/teacher')
+const Student = require('../models/student')
 const passport= require('passport')
 
 
@@ -50,8 +51,29 @@ const register = async(req,res)=>{
     }
 }
 
+//add student
+const addStudent =async(req,res)=>{
+    try {
+        const {name,subjectName,mark} =req.body
+        const isStudentExists = await Student.findOne({ name, subjectName });
+        if(isStudentExists){
+           isStudentExists.mark = mark
+           await isStudentExists.save();
+           return res.status(200).json({message:"updated the matching student"})
+        }
+
+        const newStudent = new Student({ name, subjectName, mark });
+        await newStudent.save();
+        res.status(200).json({message:"New student created successfully"})
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
 module.exports ={
     login,
     register,
-    logout
+    logout,
+    addStudent
 }
