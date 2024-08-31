@@ -93,10 +93,23 @@ const editStudent = async(req,res)=>{
     }
 }
 
+//get list of Students
+const getStudents = async(req,res)=>{
+    try {
+        const students = await Student.find()
+        res.status(200).json({students})
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({message:"Server Error"})
+    }
+}
+
+
 module.exports ={
     login,
     register,
     logout,
     addStudent,
-    editStudent
+    editStudent,
+    getStudents
 }
