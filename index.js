@@ -30,7 +30,7 @@ app.use(passport.session())
 app.use(cors({
     origin:' http://localhost:5173',
     credentials:true,
-    methods:['GET','POST'],
+    methods:['GET','POST','DELETE'],
     allowedHeaders:['Content-Type','Authorization']
 }))
 

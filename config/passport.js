@@ -10,13 +10,11 @@ passport.use(
         console.log('passport');
         try {
             const teacher = await Teacher.findOne({email})
-            console.log('tchr',teacher);
             if(!teacher){
                 return done(null,false,{message:'User not exists in this mail'})
             }
 
             const isMatch = await bcrypt.compare(password,teacher.password)
-            console.log('ps mat',isMatch);
             if(!isMatch){
                 return done(null,false,{message:'Invalid credentials'})
             }

@@ -14,5 +14,6 @@ router.post('/logout',teacherController.logout)
 router.post('/addStudent',ensureAuthenticated,validateStudent, teacherController.addStudent)
 router.post('/editStudent',ensureAuthenticated,validateStudent,teacherController.editStudent)
 router.get('/getStudents',ensureAuthenticated,teacherController.getStudents)
+router.delete('/delete/:id',ensureAuthenticated,teacherController.deleteStudent)
 
 module.exports=router
