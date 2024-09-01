@@ -7,7 +7,6 @@ const passport= require('passport')
 //teacher's login
 const login = async(req,res,next)=>{
     passport.authenticate('local',(err,teacher,info)=>{
-        console.log('login');
         if(err){
             return next(err)
         }
@@ -24,6 +23,7 @@ const login = async(req,res,next)=>{
     })(req,res,next)
 }
 
+//logout
 const logout = (req,res)=>{
     req.logout((err)=>{
         if(err){
@@ -54,15 +54,15 @@ const register = async(req,res)=>{
 //add student
 const addStudent =async(req,res)=>{
     try {
-        const {name,subjectName,mark} =req.body
-        const isStudentExists = await Student.findOne({ name, subjectName });
+        const {studentName,subjectName,mark} =req.body
+        const isStudentExists = await Student.findOne({ studentName, subjectName });
         if(isStudentExists){
            isStudentExists.mark = mark
            await isStudentExists.save();
            return res.status(200).json({message:"updated the matching student"})
         }
 
-        const newStudent = new Student({ name, subjectName, mark });
+        const newStudent = new Student({name: studentName, subjectName, mark });
         await newStudent.save();
         res.status(200).json({message:"New student created successfully"})
     } catch (error) {
@@ -74,9 +74,11 @@ const addStudent =async(req,res)=>{
 //edit student
 const editStudent = async(req,res)=>{
     try {
-        const {id,name,subjectName,mark} = req.body
+        const {name,subjectName,mark} = req.body
+       console.log('id',req.params)
+       const _id=req.params.id
         const student = await Student.findByIdAndUpdate(
-            id,
+           _id,
             {$set:{name,subjectName,mark}},
             {new:true,runValidators:true}
         )
@@ -107,8 +109,8 @@ const getStudents = async(req,res)=>{
 // delete student 
 const deleteStudent = async(req,res)=>{
     try {
-        const {id} = req.params
-        const student= await  Student.findByIdAndDelete(id)
+        const _id = req.params.id
+        const student= await  Student.findByIdAndDelete({_id})
 
        if (!student) {
         return res.status(404).json({ message: "Student not found" });

@@ -7,7 +7,6 @@ const Teacher = require('../models/teacher')
 // Configure the Local Strategy for Passport
 passport.use(
     new LocalStrategy({usernameField:'email'},async(email,password,done)=>{
-        console.log('passport');
         try {
             const teacher = await Teacher.findOne({email})
             if(!teacher){
