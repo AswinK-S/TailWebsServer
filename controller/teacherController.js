@@ -55,7 +55,8 @@ const register = async(req,res)=>{
 const addStudent =async(req,res)=>{
     try {
         const {studentName,subjectName,mark} =req.body
-        const isStudentExists = await Student.findOne({ studentName, subjectName });
+        const isStudentExists = await Student.findOne({name:studentName}, subjectName );
+
         if(isStudentExists){
            isStudentExists.mark = mark
            await isStudentExists.save();
@@ -74,15 +75,13 @@ const addStudent =async(req,res)=>{
 //edit student
 const editStudent = async(req,res)=>{
     try {
-        const {name,subjectName,mark} = req.body
-       console.log('id',req.params)
+        const {studentName,subjectName,mark} = req.body
        const _id=req.params.id
         const student = await Student.findByIdAndUpdate(
            _id,
-            {$set:{name,subjectName,mark}},
+            {$set:{name:studentName,subjectName,mark}},
             {new:true,runValidators:true}
         )
-        console.log('st',student);
         if(!student){
            return res.status(404).json({message:"Student not found"})
         }

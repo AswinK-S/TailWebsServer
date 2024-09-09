@@ -11,9 +11,9 @@ router.post('/register',validateRegistration,teacherController.register)
 router.post('/logout',teacherController.logout)
 
 //crud route for student management
-router.post('/addStudent',ensureAuthenticated,validateStudent, teacherController.addStudent)
-router.put('/editStudent/:id',ensureAuthenticated,validateStudent,teacherController.editStudent)
-router.get('/getStudents',ensureAuthenticated,teacherController.getStudents)
-router.delete('/delete/:id',ensureAuthenticated,teacherController.deleteStudent)
+router.post('/addStudent',validateStudent, teacherController.addStudent)
+router.put('/editStudent/:id',validateStudent,teacherController.editStudent)
+router.get('/getStudents',teacherController.getStudents)
+router.delete('/delete/:id',teacherController.deleteStudent)
 
 module.exports=router
