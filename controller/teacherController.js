@@ -18,6 +18,7 @@ const login = async(req,res,next)=>{
                 return next(err)
             }
             teacher.password=''
+            console.log('teacher',teacher)
             return res.status(200).json({message:'Login successfull',teacher})
         })
     })(req,res,next)
@@ -39,6 +40,7 @@ const register = async(req,res)=>{
         const {name,email,password} = req.body
         const isExists = await Teacher.findOne({email})
 
+
         if(isExists){
             return res.status(400).json({message:'Teacher exists in this mail'})
         }
@@ -56,6 +58,8 @@ const addStudent =async(req,res)=>{
     try {
         const {studentName,subjectName,mark} =req.body
         const isStudentExists = await Student.findOne({name:studentName}, subjectName );
+        
+           
 
         if(isStudentExists){
            isStudentExists.mark = mark
@@ -63,9 +67,11 @@ const addStudent =async(req,res)=>{
            return res.status(200).json({message:"updated the matching student"})
         }
 
-        const newStudent = new Student({name: studentName, subjectName, mark });
+        const id= req.session.passport.user// taking the teacher id from the session
+        const newStudent = new Student({name: studentName, subjectName, mark,teacherId:id});
         await newStudent.save();
-        res.status(200).json({message:"New student created successfully"})
+      
+        res.status(200).json({message:"New student created successfully",newStudent})
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: "Server error" });

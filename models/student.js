@@ -12,6 +12,10 @@ const studentSchema = mongoose.Schema({
     mark:{
         type:Number,
         required:true
+    },
+    teacherId:{
+        type:String,
+        required:true
     }
 })
 

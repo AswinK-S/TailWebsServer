@@ -21,7 +21,7 @@ const validateStudent =[
     .withMessage('Mark must be a number'),
 
     (req,res,next)=>{
-console.log('req',req.body);
+
         const errors = validationResult(req)
         console.log('err',errors);
         if(!errors.isEmpty()){
